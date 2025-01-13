@@ -215,4 +215,38 @@ body::before {
 
 .copy-btn:hover {
     background: #5fb4d7;
+}
+
+.video-box {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.video-wrapper {
+    margin-bottom: 20px;
+}
+
+.video-wrapper iframe {
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.video-favorite {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+}
+
+.video-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.video-info h4 {
+    color: #ff69b4;
+    margin-bottom: 5px;
 } 

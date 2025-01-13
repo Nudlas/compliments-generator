@@ -1,41 +1,22 @@
-const compliments = [
-    "Your smile lights up the whole room! ✨",
-    "You have the most adorable laugh ever! 🎵",
-    "Your creativity knows no bounds! 🎨",
-    "You make everyone around you happier! 🌟",
-    "Your kindness is truly inspiring! 💖",
-    "You're absolutely gorgeous inside and out! 🌸",
-    "Your positive energy is contagious! ⚡",
-    "You're stronger than you know! 💪",
-    "Your heart is made of pure gold! 💝",
-    "You deserve all the happiness in the world! 🌈",
-    "Your presence makes everything better! 🌺",
-    "You're simply amazing at being you! 🎭",
-    "Your determination is admirable! 🎯",
-    "You're the sweetest person ever! 🍯",
-    "Your personality is a perfect mix of cute and smart! 🦊"
+const videos = [
+    {
+        title: "Cute Video 1",
+        url: "https://www.youtube.com/embed/VIDEO_ID_1",
+        description: "✨ A lovely moment"
+    },
+    {
+        title: "Special Memory",
+        url: "https://www.youtube.com/embed/VIDEO_ID_2",
+        description: "💖 Remember this?"
+    }
+    // Add more videos here
 ];
-
-const newCompliments = [
-    "Your attention to detail is remarkable! 🔍",
-    "The way you care for others is beautiful! 🌺",
-    "Your fashion sense is absolutely fabulous! 👗",
-    "You make ordinary moments extraordinary! ✨",
-    "Your problem-solving skills are impressive! 🧩",
-    "You have the most contagious enthusiasm! 🎉",
-    "Your imagination is absolutely magical! 🌈",
-    "You're like a ray of sunshine on a cloudy day! ☀️",
-    "Your dedication to growth is inspiring! 🌱",
-    "You have such a beautiful soul! 💫"
-];
-
-compliments.push(...newCompliments);
 
 const confettiColors = ['#ff69b4', '#87ceeb', '#ffd1dc', '#e0f4ff', '#ffb6c1'];
 
 const clickSound = document.getElementById('click-sound');
 const saveSound = document.getElementById('save-sound');
-const complimentText = document.getElementById('compliment-text');
+const videoContainer = document.getElementById('video-container');
 const generateBtn = document.getElementById('generate-btn');
 const saveBtn = document.getElementById('save-btn');
 const favoritesList = document.getElementById('favorites-list');
@@ -60,15 +41,29 @@ function createConfetti() {
     }
 }
 
-function generateCompliment() {
+function generateVideo() {
     clickSound.play();
     createConfetti();
-    const randomIndex = Math.floor(Math.random() * compliments.length);
-    complimentText.textContent = compliments[randomIndex];
+    const randomIndex = Math.floor(Math.random() * videos.length);
+    const video = videos[randomIndex];
     
-    // Add bounce animation to compliment text
-    complimentText.classList.add('bounce');
-    setTimeout(() => complimentText.classList.remove('bounce'), 1000);
+    videoContainer.innerHTML = `
+        <div class="video-wrapper">
+            <iframe 
+                width="100%" 
+                height="315" 
+                src="${video.url}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+            <h3>${video.title}</h3>
+            <p>${video.description}</p>
+        </div>
+    `;
+    
+    videoContainer.classList.add('bounce');
+    setTimeout(() => videoContainer.classList.remove('bounce'), 1000);
 }
 
 function createFloatingHeart(x, y) {
@@ -81,11 +76,11 @@ function createFloatingHeart(x, y) {
     setTimeout(() => heart.remove(), 1000);
 }
 
-function saveCompliment(event) {
-    const compliment = complimentText.textContent;
-    if (compliment && !favorites.includes(compliment)) {
+function saveVideo(event) {
+    const currentVideo = videos.find(v => v.url === videoContainer.querySelector('iframe').src);
+    if (currentVideo && !favorites.some(f => f.url === currentVideo.url)) {
         saveSound.play();
-        favorites.push(compliment);
+        favorites.push(currentVideo);
         localStorage.setItem('favorites', JSON.stringify(favorites));
         updateFavoritesList();
         
@@ -101,50 +96,44 @@ function saveCompliment(event) {
     }
 }
 
-async function copyToClipboard(text) {
-    try {
-        await navigator.clipboard.writeText(text);
-        
-        // Show temporary success message
-        const message = document.createElement('div');
-        message.classList.add('copy-message');
-        message.textContent = '✨ Copied! ✨';
-        document.body.appendChild(message);
-        
-        setTimeout(() => message.remove(), 2000);
-    } catch (err) {
-        console.error('Failed to copy text: ', err);
-    }
-}
-
 function updateFavoritesList() {
     favoritesList.innerHTML = '';
-    favorites.forEach((compliment, index) => {
+    favorites.forEach((video, index) => {
         const li = document.createElement('li');
         li.innerHTML = `
-            ${compliment}
-            <div class="button-group">
-                <button class="copy-btn" onclick="copyToClipboard('${compliment.replace(/'/g, "\\'")}')">
-                    <i class="fas fa-copy"></i>
-                </button>
-                <button class="delete-btn" onclick="deleteCompliment(${index})">
-                    <i class="fas fa-trash"></i>
-                </button>
+            <div class="video-favorite">
+                <iframe 
+                    width="200" 
+                    height="150" 
+                    src="${video.url}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                <div class="video-info">
+                    <h4>${video.title}</h4>
+                    <p>${video.description}</p>
+                </div>
+                <div class="button-group">
+                    <button class="delete-btn" onclick="deleteVideo(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             </div>
         `;
         favoritesList.appendChild(li);
     });
 }
 
-function deleteCompliment(index) {
+function deleteVideo(index) {
     clickSound.play();
     favorites.splice(index, 1);
     localStorage.setItem('favorites', JSON.stringify(favorites));
     updateFavoritesList();
 }
 
-generateBtn.addEventListener('click', generateCompliment);
-saveBtn.addEventListener('click', saveCompliment);
+generateBtn.addEventListener('click', generateVideo);
+saveBtn.addEventListener('click', saveVideo);
 
 // Initial favorites list update
 updateFavoritesList(); 
