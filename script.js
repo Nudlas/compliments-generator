@@ -1,22 +1,42 @@
-const videos = [
+const mediaItems = [
     {
-        title: "Cute Video 1",
-        url: "https://www.youtube.com/embed/VIDEO_ID_1",
+        type: 'image',
+        title: "Match my freak",
+        url: "./images/freak.jpg",  // Place images in 'images' folder
         description: "✨ A lovely moment"
     },
     {
-        title: "Special Memory",
-        url: "https://www.youtube.com/embed/VIDEO_ID_2",
+        type: 'video',
+        title: "Us Core type shit",
+        url: "./videos/core.mp4",  // Place videos in 'videos' folder
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'image',
+        title: "Touch my freak",
+        url: "./images/touch.jpg",
+        description: "🌟 Such a special day"
+    },
+    {
+        type: 'video',
+        title: "I love crackers",
+        url: "./videos/love.mp4",  // Place videos in 'videos' folder
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'video',
+        title: "Good Morning",
+        url: "./videos/hey.mp4",  // Place videos in 'videos' folder
         description: "💖 Remember this?"
     }
-    // Add more videos here
+    // Add more images or videos
 ];
 
 const confettiColors = ['#ff69b4', '#87ceeb', '#ffd1dc', '#e0f4ff', '#ffb6c1'];
 
 const clickSound = document.getElementById('click-sound');
 const saveSound = document.getElementById('save-sound');
-const videoContainer = document.getElementById('video-container');
+const mediaContainer = document.getElementById('video-container'); // kept same ID for compatibility
 const generateBtn = document.getElementById('generate-btn');
 const saveBtn = document.getElementById('save-btn');
 const favoritesList = document.getElementById('favorites-list');
@@ -41,29 +61,38 @@ function createConfetti() {
     }
 }
 
-function generateVideo() {
+function generateMedia() {
     clickSound.play();
     createConfetti();
-    const randomIndex = Math.floor(Math.random() * videos.length);
-    const video = videos[randomIndex];
+    const randomIndex = Math.floor(Math.random() * mediaItems.length);
+    const media = mediaItems[randomIndex];
     
-    videoContainer.innerHTML = `
-        <div class="video-wrapper">
-            <iframe 
-                width="100%" 
-                height="315" 
-                src="${video.url}" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-            <h3>${video.title}</h3>
-            <p>${video.description}</p>
+    const mediaContent = media.type === 'video' 
+        ? `<video 
+             width="100%" 
+             height="315" 
+             controls
+             playsinline
+           >
+             <source src="${media.url}" type="video/mp4">
+             Your browser does not support the video tag.
+           </video>`
+        : `<img 
+             src="${media.url}" 
+             alt="${media.title}"
+             class="media-image"
+           >`;
+    
+    mediaContainer.innerHTML = `
+        <div class="media-wrapper">
+            ${mediaContent}
+            <h3>${media.title}</h3>
+            <p>${media.description}</p>
         </div>
     `;
     
-    videoContainer.classList.add('bounce');
-    setTimeout(() => videoContainer.classList.remove('bounce'), 1000);
+    mediaContainer.classList.add('bounce');
+    setTimeout(() => mediaContainer.classList.remove('bounce'), 1000);
 }
 
 function createFloatingHeart(x, y) {
@@ -76,11 +105,21 @@ function createFloatingHeart(x, y) {
     setTimeout(() => heart.remove(), 1000);
 }
 
-function saveVideo(event) {
-    const currentVideo = videos.find(v => v.url === videoContainer.querySelector('iframe').src);
-    if (currentVideo && !favorites.some(f => f.url === currentVideo.url)) {
+function saveMedia(event) {
+    const currentMedia = mediaItems.find(m => {
+        const mediaElement = mediaContainer.querySelector('video source, img');
+        if (!mediaElement) return false;
+        
+        const mediaUrl = mediaElement.tagName === 'IMG' 
+            ? mediaElement.src 
+            : mediaElement.parentElement.querySelector('source').src;
+            
+        return m.url === mediaUrl.replace(window.location.origin, '.');
+    });
+    
+    if (currentMedia && !favorites.some(f => f.url === currentMedia.url)) {
         saveSound.play();
-        favorites.push(currentVideo);
+        favorites.push(currentMedia);
         localStorage.setItem('favorites', JSON.stringify(favorites));
         updateFavoritesList();
         
@@ -98,24 +137,33 @@ function saveVideo(event) {
 
 function updateFavoritesList() {
     favoritesList.innerHTML = '';
-    favorites.forEach((video, index) => {
+    favorites.forEach((media, index) => {
+        const mediaContent = media.type === 'video' 
+            ? `<video 
+                 width="200" 
+                 height="150" 
+                 controls
+                 playsinline
+               >
+                 <source src="${media.url}" type="video/mp4">
+                 Your browser does not support the video tag.
+               </video>`
+            : `<img 
+                 src="${media.url}" 
+                 alt="${media.title}"
+                 class="favorite-image"
+               >`;
+
         const li = document.createElement('li');
         li.innerHTML = `
-            <div class="video-favorite">
-                <iframe 
-                    width="200" 
-                    height="150" 
-                    src="${video.url}" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-                <div class="video-info">
-                    <h4>${video.title}</h4>
-                    <p>${video.description}</p>
+            <div class="media-favorite">
+                ${mediaContent}
+                <div class="media-info">
+                    <h4>${media.title}</h4>
+                    <p>${media.description}</p>
                 </div>
                 <div class="button-group">
-                    <button class="delete-btn" onclick="deleteVideo(${index})">
+                    <button class="delete-btn" onclick="deleteMedia(${index})">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -125,15 +173,15 @@ function updateFavoritesList() {
     });
 }
 
-function deleteVideo(index) {
+function deleteMedia(index) {
     clickSound.play();
     favorites.splice(index, 1);
     localStorage.setItem('favorites', JSON.stringify(favorites));
     updateFavoritesList();
 }
 
-generateBtn.addEventListener('click', generateVideo);
-saveBtn.addEventListener('click', saveVideo);
+generateBtn.addEventListener('click', generateMedia);
+saveBtn.addEventListener('click', saveMedia);
 
 // Initial favorites list update
 updateFavoritesList(); 
