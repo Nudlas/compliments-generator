@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Compliments Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Daily Compliments ✨</h1>
+        
+        <div class="compliment-box">
+            <p id="compliment-text">Click the button to get a lovely compliment!</p>
+            <div class="buttons">
+                <button id="generate-btn">
+                    <i class="fas fa-magic"></i> Generate Compliment
+                </button>
+                <button id="save-btn">
+                    <i class="fas fa-heart"></i> Save to Favorites
+                </button>
+            </div>
+        </div>
+
+        <div class="favorites-section">
+            <h2>❤️ My Favorite Compliments ❤️</h2>
+            <ul id="favorites-list"></ul>
+        </div>
+    </div>
+    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="save-sound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html> 
