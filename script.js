@@ -2,31 +2,31 @@ const mediaItems = [
     {
         type: 'image',
         title: "Match my freak",
-        url: "./images/freak.jpg",  // Place images in 'images' folder
+        url: "/compliments-generator/images/freak.jpg",  // Update path to include repo name
         description: "✨ A lovely moment"
     },
     {
         type: 'video',
         title: "Us Core type shit",
-        url: "./videos/core.mp4",  // Place videos in 'videos' folder
+        url: "/compliments-generator/videos/core.mp4",  // Update path to include repo name
         description: "💖 Remember this?"
     },
     {
         type: 'image',
         title: "Touch my freak",
-        url: "./images/touch.jpg",
+        url: "/compliments-generator/images/touch.jpg",
         description: "🌟 Such a special day"
     },
     {
         type: 'video',
         title: "I love crackers",
-        url: "./videos/love.mp4",  // Place videos in 'videos' folder
+        url: "/compliments-generator/videos/love.mp4",
         description: "💖 Remember this?"
     },
     {
         type: 'video',
         title: "Good Morning",
-        url: "./videos/hey.mp4",  // Place videos in 'videos' folder
+        url: "/compliments-generator/videos/hey.mp4",
         description: "💖 Remember this?"
     }
     // Add more images or videos
