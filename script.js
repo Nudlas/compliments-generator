@@ -2,79 +2,79 @@ const mediaItems = [
     {
         type: 'image',
         title: "Match my freak",
-        url: "/compliments-generator/images/freak.jpg",  // Update path to include repo name
+        url: "./images/freak.jpg",  // Changed from /compliments-generator/images/
         description: "✨ A lovely moment"
     },
     {
         type: 'video',
         title: "Us Core type shit",
-        url: "/compliments-generator/videos/core.mp4",  // Update path to include repo name
+        url: "./videos/core.mp4",  // Changed from /compliments-generator/videos/
         description: "💖 Remember this?"
     },
     {
         type: 'image',
         title: "Touch my freak",
-        url: "/compliments-generator/images/touch.jpg",
+        url: "./images/touch.jpg",
         description: "🌟 Such a special day"
     },
     {
         type: 'video',
         title: "I love crackers",
-        url: "/compliments-generator/videos/love.mp4",
+        url: "./videos/love.mp4",
         description: "💖 Remember this?"
     },
     {
         type: 'video',
         title: "Good Morning",
-        url: "/compliments-generator/videos/hey.mp4",
+        url: "./videos/hey.mp4",
         description: "💖 Remember this?"
     },
     {
         type: 'video',
         title: "Dont give up 🥰",
-        url: "/compliments-generator/videos/give.mp4",
+        url: "./videos/give.mp4",
         description: "💖 Remember this?"
     },
     {
         type: 'video',
         title: "Real shit",
-        url: "/compliments-generator/videos/real.mp4",
+        url: "./videos/real.mp4",
         description: "💖 Remember this?"
     },
     {
         type: 'video',
         title: "Flower lover ❤",
-        url: "/compliments-generator/videos/flower.mp4",
+        url: "./videos/flower.mp4",
         description: "💖 Remember this?"
     },
     {
         type: 'video',
         title: "Keep moving forward 💖",
-        url: "/compliments-generator/videos/move.mp4",
+        url: "./videos/move.mp4",
         description: "💖 Remember this?"
     },
     {
         type: 'image',
         title: "I love you",
-        url: "/compliments-generator/images/love.jpg",
+        url: "./images/heart.jpg",
         description: "💖 Remember this?"
     },
     {
         type: 'image',
         title: "Armin lover 💖",
-        url: "/compliments-generator/images/armin.jpg",
+        url: "./images/armin.jpg",
         description: "💖 Remember this?"
     },
     {
         type: 'image',
         title: "Word of God 💖",
-        url: "/compliments-generator/images/bible.jpg",
+        url: "./images/bible.jpg",
         description: "💖 Remember this?"
     },
     {
         type: 'image',
         title: "Facts",
-        url: "/compliments-generator/images/true.jpg",
+        url: "./images/true.jpg",
         description: "💖 Remember this?"
     },
     // Add more images or videos
