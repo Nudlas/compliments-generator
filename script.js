@@ -28,7 +28,55 @@ const mediaItems = [
         title: "Good Morning",
         url: "/compliments-generator/videos/hey.mp4",
         description: "💖 Remember this?"
-    }
+    },
+    {
+        type: 'video',
+        title: "Dont give up 🥰",
+        url: "/compliments-generator/videos/give.mp4",
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'video',
+        title: "Real shit",
+        url: "/compliments-generator/videos/real.mp4",
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'video',
+        title: "Flower lover ❤",
+        url: "/compliments-generator/videos/flower.mp4",
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'video',
+        title: "Keep moving forward 💖",
+        url: "/compliments-generator/videos/move.mp4",
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'image',
+        title: "I love you",
+        url: "/compliments-generator/images/love.jpg",
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'image',
+        title: "Armin lover 💖",
+        url: "/compliments-generator/images/armin.jpg",
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'image',
+        title: "Word of God 💖",
+        url: "/compliments-generator/images/bible.jpg",
+        description: "💖 Remember this?"
+    },
+    {
+        type: 'image',
+        title: "Facts",
+        url: "/compliments-generator/images/true.jpg",
+        description: "💖 Remember this?"
+    },
     // Add more images or videos
 ];
 
@@ -106,16 +154,17 @@ function createFloatingHeart(x, y) {
 }
 
 function saveMedia(event) {
-    const currentMedia = mediaItems.find(m => {
-        const mediaElement = mediaContainer.querySelector('video source, img');
-        if (!mediaElement) return false;
+    const mediaElement = mediaContainer.querySelector('video source, img');
+    if (!mediaElement) return;
+    
+    const currentUrl = mediaElement.tagName === 'IMG' 
+        ? mediaElement.src 
+        : mediaElement.parentElement.querySelector('source').src;
         
-        const mediaUrl = mediaElement.tagName === 'IMG' 
-            ? mediaElement.src 
-            : mediaElement.parentElement.querySelector('source').src;
-            
-        return m.url === mediaUrl.replace(window.location.origin, '.');
-    });
+    // Clean up the URL for comparison
+    const cleanUrl = currentUrl.split('/').slice(-2).join('/'); // Gets "images/filename.jpg" or "videos/filename.mp4"
+    
+    const currentMedia = mediaItems.find(m => m.url.endsWith(cleanUrl));
     
     if (currentMedia && !favorites.some(f => f.url === currentMedia.url)) {
         saveSound.play();
@@ -184,4 +233,25 @@ generateBtn.addEventListener('click', generateMedia);
 saveBtn.addEventListener('click', saveMedia);
 
 // Initial favorites list update
-updateFavoritesList(); 
+updateFavoritesList();
+
+// Add this helper function to make sure favorites load correctly
+function initializeFavorites() {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+        try {
+            favorites = JSON.parse(savedFavorites);
+            // Validate saved favorites against current mediaItems
+            favorites = favorites.filter(fav => 
+                mediaItems.some(item => item.url === fav.url)
+            );
+            updateFavoritesList();
+        } catch (e) {
+            console.error('Error loading favorites:', e);
+            favorites = [];
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+    }
+}
+
+initializeFavorites(); 
